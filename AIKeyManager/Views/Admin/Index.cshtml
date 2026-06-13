@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">🛡️ Admin Panel</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">👥 Korisnici</h5>
+                    <h2>@ViewBag.TotalUsers</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">🔑 API Keyevi</h5>
+                    <h2>@ViewBag.TotalApiKeys</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Requestovi</h5>
+                    <h2>@ViewBag.TotalRequests</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">🤖 Provideri</h5>
+                    <h2>@ViewBag.TotalProviders</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>🤖 Upravljanje Providerima</h5>
+                    <p>Dodajte i upravljajte AI providerima</p>
+                    <a href="/Admin/Providers" class="btn btn-primary">Idi na Providere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>🧠 Upravljanje Modelima</h5>
+                    <p>Dodajte i upravljajte AI modelima</p>
+                    <a href="/Admin/Models" class="btn btn-success">Idi na Modele</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>👥 Upravljanje Korisnicima</h5>
+                    <p>Pregledajte i upravljajte korisnicima</p>
+                    <a href="/Admin/Users" class="btn btn-danger">Idi na Korisnike</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

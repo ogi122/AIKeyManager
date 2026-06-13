@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">👋 Dobrodošli, @User.Identity.Name!</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">💰 Kredit</h5>
+                    <h2>$@ViewBag.Credit.ToString("F2")</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">🔑 Aktivni API Keyevi</h5>
+                    <h2>@(((IEnumerable<AIKeyManager.Models.ApiKey>)ViewBag.ApiKeys).Count())</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Nedavni Requestovi</h5>
+                    <h2>@(((IEnumerable<AIKeyManager.Models.Request>)ViewBag.RecentRequests).Count())</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🔑 Moji API Keyevi</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var key in (IEnumerable<AIKeyManager.Models.ApiKey>)ViewBag.ApiKeys)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+                            <div>
+                                <strong>@key.KeyName</strong><br />
+                                <small class="text-muted">@key.AIModel?.Provider?.ProviderName - @key.AIModel?.ModelName</small>
+                            </div>
+                            <span class="badge bg-success">Aktivan</span>
+                        </div>
+                    }
+                    <a href="/User/ApiKeys" class="btn btn-primary mt-2">Upravljaj keyevima</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>📊 Nedavna aktivnost</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var req in (IEnumerable<AIKeyManager.Models.Request>)ViewBag.RecentRequests)
+                    {
+                        <div class="d-flex justify-content-between mb-2 p-2 bg-light rounded">
+                            <div>
+                                <strong>@req.AIModel?.ModelName</strong><br />
+                                <small class="text-muted">@req.RequestedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-info">@req.TokensUsed tokens</span><br />
+                                <small>$@req.CostCharged.ToString("F6")</small>
+                            </div>
+                        </div>
+                    }
+                    @if (!((IEnumerable<AIKeyManager.Models.Request>)ViewBag.RecentRequests).Any())
+                    {
+                        <p class="text-muted">Nema nedavnih requestova.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

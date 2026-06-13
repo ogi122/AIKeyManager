@@ -1,0 +1,90 @@
+﻿@model IEnumerable<AIKeyManager.Models.ApiKey>
+
+@{
+    ViewData["Title"] = "API Keyevi";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🔑 Moji API Keyevi</h2>
+        <a href="/User/Dashboard" class="btn btn-secondary">← Nazad</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Generiši novi API Key</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/User/GenerateApiKey">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <select name="modelId" class="form-select" required>
+                            <option value="">Odaberi model</option>
+                            @foreach (var m in ViewBag.Models)
+                            {
+                                <option value="@m.ModelId">@m.Provider.ProviderName - @m.ModelName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="keyName" class="form-control" placeholder="Naziv keya (npr. Moj projekat)" required />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Generiši</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Provider</th>
+                        <th>Model</th>
+                        <th>API Key</th>
+                        <th>Kreiran</th>
+                        <th>Status</th>
+                        <th>Akcije</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var key in Model)
+                    {
+                        <tr>
+                            <td><strong>@key.KeyName</strong></td>
+                            <td>@key.AIModel?.Provider?.ProviderName</td>
+                            <td>@key.AIModel?.ModelName</td>
+                            <td>
+                                <code style="font-size:0.75rem">@key.KeyValue</code>
+                            </td>
+                            <td>@key.CreatedAt.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                @if (key.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktivan</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Neaktivan</span>
+                                }
+                            </td>
+                            <td>
+                                @if (key.IsActive)
+                                {
+                                    <form method="post" action="/User/RevokeApiKey" style="display:inline">
+                                        <input type="hidden" name="id" value="@key.ApiKeyId" />
+                                        <button type="submit" class="btn btn-sm btn-danger">Revoke</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

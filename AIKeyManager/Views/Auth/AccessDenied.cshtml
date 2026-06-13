@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Pristup odbijen";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pristup odbijen</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .error-card {
+            text-align: center;
+            padding: 60px 40px;
+        }
+        .error-icon { font-size: 5rem; }
+        h1 { font-size: 2.5rem; font-weight: 700; margin: 20px 0 10px; }
+        p { color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+        .btn-primary {
+            background: linear-gradient(135deg, #6c63ff, #a78bfa);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-icon">🚫</div>
+        <h1>Pristup odbijen</h1>
+        <p>Nemate dozvolu za pristup ovoj stranici.</p>
+        <a href="/Auth/Login" class="btn btn-primary">← Nazad na Login</a>
+    </div>
+</body>
+</html>

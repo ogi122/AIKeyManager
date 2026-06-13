@@ -1,0 +1,90 @@
+﻿@model IEnumerable<AIKeyManager.Models.AIModel>
+
+@{
+    ViewData["Title"] = "Pretraga";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">🔍 Pretraga AI Modela</h2>
+
+    <!-- Brza pretraga -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>⚡ Brza pretraga</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" action="/User/Search">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control form-control-lg"
+                           placeholder="Pretraži modele..." value="@ViewBag.Query" />
+                    <button type="submit" class="btn btn-primary btn-lg">Pretraži</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Detaljna pretraga -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>🔎 Detaljna pretraga</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" action="/User/Search">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Naziv modela</label>
+                        <input type="text" name="query" class="form-control"
+                               placeholder="npr. GPT-4" value="@ViewBag.Query" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Provider</label>
+                        <select name="providerId" class="form-select">
+                            <option value="">Svi provideri</option>
+                            @foreach (var provider in ViewBag.Providers)
+                            {
+                                <option value="@provider.ProviderId">@provider.ProviderName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">Pretraži</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rezultati -->
+    <div class="card">
+        <div class="card-header">
+            <h5>📋 Rezultati (@Model.Count() modela)</h5>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-muted text-center py-4">Nema rezultata za vašu pretragu.</p>
+            }
+            else
+            {
+                <div class="row g-3">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card h-100 border">
+                                <div class="card-body">
+                                    <span class="badge bg-primary mb-2">@item.Provider?.ProviderName</span>
+                                    <h5 class="card-title">@item.ModelName</h5>
+                                    <p class="card-text text-muted">@item.Description</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-success fw-bold">$@item.CostPerRequest.ToString("F6")/req</span>
+                                        <a href="/User/ApiKeys" class="btn btn-sm btn-outline-primary">Generiši Key</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

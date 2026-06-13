@@ -1,0 +1,84 @@
+﻿@model IEnumerable<AIKeyManager.Models.AIModel>
+
+@{
+    ViewData["Title"] = "Modeli";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🧠 AI Modeli</h2>
+        <a href="/Admin" class="btn btn-secondary">← Nazad</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Dodaj novi model</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/Admin/AddModel">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <select name="providerId" class="form-select" required>
+                            <option value="">Odaberi providera</option>
+                            @foreach (var provider in ViewBag.Providers)
+                            {
+                                <option value="@provider.ProviderId">@provider.ProviderName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="modelName" class="form-control" placeholder="Naziv modela" required />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="description" class="form-control" placeholder="Opis" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" name="costPerRequest" class="form-control" placeholder="Cijena" step="0.000001" required />
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-success w-100">Dodaj</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Provider</th>
+                        <th>Model</th>
+                        <th>Opis</th>
+                        <th>Cijena/Request</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ModelId</td>
+                            <td><span class="badge bg-primary">@item.Provider.ProviderName</span></td>
+                            <td><strong>@item.ModelName</strong></td>
+                            <td>@item.Description</td>
+                            <td>$@item.CostPerRequest.ToString("F6")</td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktivan</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Neaktivan</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

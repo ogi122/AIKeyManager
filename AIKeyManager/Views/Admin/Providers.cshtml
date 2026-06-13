@@ -1,0 +1,77 @@
+﻿@model IEnumerable<AIKeyManager.Models.Provider>
+
+@{
+    ViewData["Title"] = "Provideri";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🤖 AI Provideri</h2>
+        <a href="/Admin" class="btn btn-secondary">← Nazad</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Dodaj novog providera</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/Admin/AddProvider">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" name="providerName" class="form-control" placeholder="Naziv providera" required />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" name="description" class="form-control" placeholder="Opis" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Dodaj</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Naziv</th>
+                        <th>Opis</th>
+                        <th>Status</th>
+                        <th>Kreirano</th>
+                        <th>Akcije</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var provider in Model)
+                    {
+                        <tr>
+                            <td>@provider.ProviderId</td>
+                            <td><strong>@provider.ProviderName</strong></td>
+                            <td>@provider.Description</td>
+                            <td>
+                                @if (provider.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktivan</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Neaktivan</span>
+                                }
+                            </td>
+                            <td>@provider.CreatedAt.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                <form method="post" action="/Admin/DeleteProvider" style="display:inline">
+                                    <input type="hidden" name="id" value="@provider.ProviderId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Deaktiviraj</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
