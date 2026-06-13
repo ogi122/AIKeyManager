@@ -25,6 +25,8 @@ namespace AIKeyManager.Data
             modelBuilder.Entity<Request>().ToTable("Requests");
             modelBuilder.Entity<AIModel>().ToTable("Models");
             modelBuilder.Entity<Transaction>().ToTable("Transactions");
+            modelBuilder.Entity<ApiKey>().ToTable(tb => tb.HasTrigger("trg_ApiKey_Insert"));
+            modelBuilder.Entity<Request>().ToTable(tb => tb.HasTrigger("trg_Request_DeductCredit"));
             base.OnModelCreating(modelBuilder);
         }
     }
