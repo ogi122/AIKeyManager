@@ -80,7 +80,7 @@ namespace AIKeyManager.Controllers
                 IsActive = true
             });
             await _context.SaveChangesAsync();
-            return RedirectToAction("Models");
+            return RedirectToAction("AIModels");
         }
 
         // Users

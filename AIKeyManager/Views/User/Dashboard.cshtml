@@ -6,7 +6,7 @@
     <h2 class="mb-4">👋 Dobrodošli, @User.Identity.Name!</h2>
 
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white bg-success">
                 <div class="card-body">
                     <h5 class="card-title">💰 Kredit</h5>
@@ -14,7 +14,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">📈 Ukupno potrošeno</h5>
+                    <h2>$@ViewBag.TotalSpent.ToString("F4")</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card text-white bg-primary">
                 <div class="card-body">
                     <h5 class="card-title">🔑 Aktivni API Keyevi</h5>
@@ -22,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white bg-warning">
                 <div class="card-body">
                     <h5 class="card-title">📊 Nedavni Requestovi</h5>
