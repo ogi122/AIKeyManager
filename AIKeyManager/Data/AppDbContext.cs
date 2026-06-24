@@ -27,6 +27,13 @@ namespace AIKeyManager.Data
             modelBuilder.Entity<Transaction>().ToTable("Transactions");
             modelBuilder.Entity<ApiKey>().ToTable(tb => tb.HasTrigger("trg_ApiKey_Insert"));
             modelBuilder.Entity<Request>().ToTable(tb => tb.HasTrigger("trg_Request_DeductCredit"));
+
+            modelBuilder.Entity<AIModel>().Property(m => m.CostPerRequest).HasPrecision(10, 6);
+            modelBuilder.Entity<Request>().Property(r => r.CostCharged).HasPrecision(10, 6);
+            modelBuilder.Entity<Credit>().Property(c => c.Balance).HasPrecision(10, 2);
+            modelBuilder.Entity<Transaction>().Property(t => t.Amount).HasPrecision(10, 2);
+            modelBuilder.Entity<Subscription>().Property(s => s.MonthlyCredit).HasPrecision(10, 2);
+
             base.OnModelCreating(modelBuilder);
         }
     }

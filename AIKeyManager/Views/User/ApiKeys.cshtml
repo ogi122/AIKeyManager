@@ -5,6 +5,14 @@
 }
 
 <div class="container py-4">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>🔑 Moji API Keyevi</h2>
         <a href="/User/Dashboard" class="btn btn-secondary">← Nazad</a>
@@ -75,6 +83,10 @@
                             <td>
                                 @if (key.IsActive)
                                 {
+                                    <form method="post" action="/User/SimulateRequest" style="display:inline">
+                                        <input type="hidden" name="apiKeyId" value="@key.ApiKeyId" />
+                                        <button type="submit" class="btn btn-sm btn-success">▶ Simuliraj</button>
+                                    </form>
                                     <form method="post" action="/User/RevokeApiKey" style="display:inline">
                                         <input type="hidden" name="id" value="@key.ApiKeyId" />
                                         <button type="submit" class="btn btn-sm btn-danger">Revoke</button>

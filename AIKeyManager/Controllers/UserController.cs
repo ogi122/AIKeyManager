@@ -164,6 +164,57 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("ApiKeys");
         }
 
+        // Simulira korištenje API keya - kao da je AI stvarno odradio jedan poziv.
+        // Ovo ubacuje red u Requests tabelu, a NAŠ TRIGGER (trg_Request_DeductCredit)
+        // se automatski pokrene i oduzme kredit korisniku.
+        [HttpPost]
+        public async Task<IActionResult> SimulateRequest(int apiKeyId)
+        {
+            int userId = GetUserId();
+
+            ApiKey apiKey = await _context.ApiKeys
+                .Include(k => k.AIModel)
+                .FirstOrDefaultAsync(k => k.ApiKeyId == apiKeyId && k.UserId == userId && k.IsActive == true);
+
+            if (apiKey == null)
+            {
+                TempData["Error"] = "API key nije pronađen.";
+                return RedirectToAction("ApiKeys");
+            }
+
+            Credit credit = await _context.Credits
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (credit != null && credit.Balance < apiKey.AIModel.CostPerRequest)
+            {
+                TempData["Error"] = "Nemate dovoljno kredita za ovaj poziv.";
+                return RedirectToAction("ApiKeys");
+            }
+
+            Random random = new Random();
+            int tokensUsed = random.Next(50, 2000);
+
+            Request newRequest = new Request
+            {
+                ApiKeyId = apiKey.ApiKeyId,
+                UserId = userId,
+                ModelId = apiKey.ModelId,
+                TokensUsed = tokensUsed,
+                CostCharged = apiKey.AIModel.CostPerRequest,
+                RequestedAt = DateTime.Now,
+                StatusCode = 200
+            };
+
+            apiKey.LastUsedAt = DateTime.Now;
+
+            _context.ApiRequests.Add(newRequest);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Request simuliran! Tokeni: " + tokensUsed;
+
+            return RedirectToAction("ApiKeys");
+        }
+
         // Pretraga modela - i brza pretraga (samo query) i detaljna (query + provider filter).
         public async Task<IActionResult> Search(string query, int? providerId, int? modelId)
         {
