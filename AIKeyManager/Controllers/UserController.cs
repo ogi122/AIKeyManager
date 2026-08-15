@@ -205,14 +205,35 @@ namespace AIKeyManager.Controllers
                 StatusCode = 200
             };
 
-            apiKey.LastUsedAt = DateTime.Now;
-
             _context.ApiRequests.Add(newRequest);
+            await _context.SaveChangesAsync();
+
+            apiKey.LastUsedAt = DateTime.Now;
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Request simuliran! Tokeni: " + tokensUsed;
 
             return RedirectToAction("ApiKeys");
+        }
+
+        // Briše historiju requestova (Nedavna aktivnost) za ulogovanog korisnika.
+        // NE dira Credits.Balance - taj kredit je već "potrošen" i ostaje potrošen.
+        // Ovo samo čisti log koji se prikazuje na Dashboard-u, kao "obriši historiju".
+        [HttpPost]
+        public async Task<IActionResult> ClearRequestHistory()
+        {
+            int userId = GetUserId();
+
+            List<Request> userRequests = await _context.ApiRequests
+                .Where(r => r.UserId == userId)
+                .ToListAsync();
+
+            _context.ApiRequests.RemoveRange(userRequests);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Istorija requestova je obrisana.";
+
+            return RedirectToAction("Dashboard");
         }
 
         // Pretraga modela - i brza pretraga (samo query) i detaljna (query + provider filter).

@@ -3,6 +3,11 @@
 }
 
 <div class="container py-4">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
     <h2 class="mb-4">👋 Dobrodošli, @User.Identity.Name!</h2>
 
     <div class="row g-4 mb-4">
@@ -10,7 +15,7 @@
             <div class="card text-white bg-success">
                 <div class="card-body">
                     <h5 class="card-title">💰 Kredit</h5>
-                    <h2>$@ViewBag.Credit.ToString("F2")</h2>
+                    <h2>$@ViewBag.Credit.ToString("F4")</h2>
                 </div>
             </div>
         </div>
@@ -30,15 +35,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning">
-                <div class="card-body">
-                    <h5 class="card-title">📊 Nedavni Requestovi</h5>
-                    <h2>@(((IEnumerable<AIKeyManager.Models.Request>)ViewBag.RecentRequests).Count())</h2>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row g-4">
         <div class="col-md-6">
@@ -64,8 +60,13 @@
 
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>📊 Nedavna aktivnost</h5>
+                    <div>
+                        <form method="post" action="/User/ClearRequestHistory" style="display:inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Očisti</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     @foreach (var req in (IEnumerable<AIKeyManager.Models.Request>)ViewBag.RecentRequests)

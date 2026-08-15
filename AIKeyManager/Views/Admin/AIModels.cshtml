@@ -54,6 +54,7 @@
                         <th>Opis</th>
                         <th>Cijena/Request</th>
                         <th>Status</th>
+                        <th>Akcije</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,6 +75,18 @@
                                 {
                                     <span class="badge bg-danger">Neaktivan</span>
                                 }
+                            </td>
+                            <td>
+                                <form method="post" action="/Admin/ToggleModel" style="display:inline">
+                                    <input type="hidden" name="id" value="@item.ModelId" />
+                                    <button type="submit" class="btn btn-sm @(item.IsActive ? "btn-warning" : "btn-success")">
+                                        @(item.IsActive ? "Deaktiviraj" : "Aktiviraj")
+                                    </button>
+                                </form>
+                                <form method="post" action="/Admin/DeleteModel" style="display:inline" onsubmit="return confirm('Sigurno obrisati ovaj model?');">
+                                    <input type="hidden" name="id" value="@item.ModelId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Obriši</button>
+                                </form>
                             </td>
                         </tr>
                     }

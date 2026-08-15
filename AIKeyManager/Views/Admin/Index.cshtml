@@ -9,7 +9,7 @@
         <div class="col-md-3">
             <div class="card text-white bg-primary">
                 <div class="card-body">
-                    <h5 class="card-title">👥 Korisnici</h5>
+                    <h5 class="card-title">👥 Registrovani korisnici</h5>
                     <h2>@ViewBag.TotalUsers</h2>
                 </div>
             </div>
@@ -17,24 +17,16 @@
         <div class="col-md-3">
             <div class="card text-white bg-success">
                 <div class="card-body">
-                    <h5 class="card-title">🔑 API Keyevi</h5>
-                    <h2>@ViewBag.TotalApiKeys</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning">
-                <div class="card-body">
-                    <h5 class="card-title">📊 Requestovi</h5>
-                    <h2>@ViewBag.TotalRequests</h2>
+                    <h5 class="card-title">🔑 Aktivni API Keyevi</h5>
+                    <h2>@ViewBag.ActiveApiKeys</h2>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card text-white bg-danger">
                 <div class="card-body">
-                    <h5 class="card-title">🤖 Provideri</h5>
-                    <h2>@ViewBag.TotalProviders</h2>
+                    <h5 class="card-title">🤖 Aktivni provideri</h5>
+                    <h2>@ViewBag.ActiveProviders</h2>
                 </div>
             </div>
         </div>
@@ -55,7 +47,7 @@
                 <div class="card-body">
                     <h5>🧠 Upravljanje Modelima</h5>
                     <p>Dodajte i upravljajte AI modelima</p>
-                    <a href="/Admin/Models" class="btn btn-success">Idi na Modele</a>
+                    <a href="/Admin/AIModels" class="btn btn-success">Idi na Modele</a>
                 </div>
             </div>
         </div>

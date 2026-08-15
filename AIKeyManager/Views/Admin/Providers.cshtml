@@ -7,6 +7,14 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>🤖 AI Provideri</h2>
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
         <a href="/Admin" class="btn btn-secondary">← Nazad</a>
     </div>
 
@@ -63,9 +71,15 @@
                             </td>
                             <td>@provider.CreatedAt.ToString("dd.MM.yyyy")</td>
                             <td>
-                                <form method="post" action="/Admin/DeleteProvider" style="display:inline">
+                                <form method="post" action="/Admin/ToggleProviderStatus" style="display:inline">
                                     <input type="hidden" name="id" value="@provider.ProviderId" />
-                                    <button type="submit" class="btn btn-sm btn-danger">Deaktiviraj</button>
+                                    <button type="submit" class="btn btn-sm @(provider.IsActive ? "btn-warning" : "btn-success")">
+                                        @(provider.IsActive ? "Deaktiviraj" : "Aktiviraj")
+                                    </button>
+                                </form>
+                                <form method="post" action="/Admin/DeleteProvider" style="display:inline" onsubmit="return confirm('Sigurno obrisati ovaj provider?');">
+                                    <input type="hidden" name="id" value="@provider.ProviderId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Obriši</button>
                                 </form>
                             </td>
                         </tr>

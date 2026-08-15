@@ -13,10 +13,10 @@ namespace AIKeyManager.Models
         public string ProviderName { get; set; }
 
         [StringLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [StringLength(300)]
-        public string LogoUrl { get; set; }
+        public string? LogoUrl { get; set; }
 
         public bool IsActive { get; set; } = true;
 

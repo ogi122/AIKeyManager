@@ -7,6 +7,14 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>👥 Korisnici</h2>
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
         <a href="/Admin" class="btn btn-secondary">← Nazad</a>
     </div>
 
@@ -58,6 +66,11 @@
                                     <button type="submit" class="btn btn-sm @(user.IsActive ? "btn-warning" : "btn-success")">
                                         @(user.IsActive ? "Deaktiviraj" : "Aktiviraj")
                                     </button>
+                                </form>
+
+                                <form method="post" action="/Admin/DeleteUser" style="display:inline" onsubmit="return confirm('Sigurno obrisati ovog korisnika?');">
+                                    <input type="hidden" name="id" value="@user.UserId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Obriši</button>
                                 </form>
                             </td>
                         </tr>
