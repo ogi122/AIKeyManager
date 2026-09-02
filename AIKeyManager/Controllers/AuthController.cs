@@ -19,7 +19,6 @@ namespace AIKeyManager.Controllers
             _context = context;
         }
 
-        // GET: /Auth/Login
         public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
@@ -27,7 +26,6 @@ namespace AIKeyManager.Controllers
             return View();
         }
 
-        // POST: /Auth/Login
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
@@ -59,7 +57,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("Dashboard", "User");
         }
 
-        // GET: /Auth/Register
         public IActionResult Register()
         {
             if (User.Identity.IsAuthenticated)
@@ -67,7 +64,6 @@ namespace AIKeyManager.Controllers
             return View();
         }
 
-        // POST: /Auth/Register
         [HttpPost]
         public async Task<IActionResult> Register(string username, string email, string password)
         {
@@ -88,7 +84,7 @@ namespace AIKeyManager.Controllers
                 Username = username,
                 Email = email,
                 PasswordHash = HashPassword(password),
-                RoleId = 2, // User role
+                RoleId = 2, 
                 CreatedAt = DateTime.Now,
                 IsActive = true
             };
@@ -96,10 +92,8 @@ namespace AIKeyManager.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Dodaj kredit
             _context.Credits.Add(new Credit { UserId = user.UserId, Balance = 5.00m });
 
-            // Dodaj Free subscription
             _context.UserSubscriptions.Add(new UserSubscription
             {
                 UserId = user.UserId,
@@ -113,7 +107,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("Login");
         }
 
-        // GET: /Auth/Logout
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

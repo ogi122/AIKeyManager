@@ -24,7 +24,6 @@ namespace AIKeyManager.Controllers
             return View();
         }
 
-        // Providers
         public async Task<IActionResult> Providers()
         {
             var providers = await _context.Providers.ToListAsync();
@@ -85,40 +84,33 @@ namespace AIKeyManager.Controllers
 
             try
             {
-                // 1. Nadji sve API keyeve korisnika
                 var userApiKeys = await _context.ApiKeys
                     .Where(k => k.UserId == id)
                     .ToListAsync();
 
                 var apiKeyIds = userApiKeys.Select(k => k.ApiKeyId).ToList();
 
-                // 2. Obrisi sve requestove vezane za te keyeve
                 var userRequests = await _context.ApiRequests
                     .Where(r => apiKeyIds.Contains(r.ApiKeyId) || r.UserId == id)
                     .ToListAsync();
 
-                // 3. Obrisi sve API keyeve
                 _context.ApiKeys.RemoveRange(userApiKeys);
 
-                // 4. Obrisi transakcije korisnika
                 var userTransactions = await _context.Transactions
                     .Where(t => t.UserId == id)
                     .ToListAsync();
                 _context.Transactions.RemoveRange(userTransactions);
 
-                // 5. Obrisi kredit korisnika
                 var userCredit = await _context.Credits
                     .FirstOrDefaultAsync(c => c.UserId == id);
                 if (userCredit != null)
                     _context.Credits.Remove(userCredit);
 
-                // 6. Obrisi subscription korisnika
                 var userSubscriptions = await _context.UserSubscriptions
                     .Where(s => s.UserId == id)
                     .ToListAsync();
                 _context.UserSubscriptions.RemoveRange(userSubscriptions);
 
-                // 7. Obrisi samog korisnika
                 _context.Users.Remove(user);
 
                 await _context.SaveChangesAsync();
@@ -133,7 +125,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("Users");
         }
 
-        // Models
         public async Task<IActionResult> AIModels()
         {
             var models = await _context.Models
@@ -190,7 +181,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("AIModels");
         }
 
-        // Users
         public async Task<IActionResult> Users()
         {
             var users = await _context.Users

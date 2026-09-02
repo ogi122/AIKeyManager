@@ -18,9 +18,6 @@ namespace AIKeyManager.Controllers
             _context = context;
         }
 
-        // Ova metoda čita UserId iz korisnikovog login cookie-ja (claims).
-        // Kada se korisnik uloguje, u AuthController smo zapisali UserId u Claims.
-        // Ovdje ga čitamo nazad da znamo koji je trenutno ulogovani korisnik.
         private int GetUserId()
         {
             string userIdAsText = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -34,7 +31,6 @@ namespace AIKeyManager.Controllers
             return userId;
         }
 
-        // Prikazuje glavnu stranicu korisnika nakon logina.
         public async Task<IActionResult> Dashboard()
         {
             int userId = GetUserId();
@@ -94,7 +90,6 @@ namespace AIKeyManager.Controllers
             return View();
         }
 
-        // Prikazuje listu API keyeva korisnika i formu za generisanje novog.
         public async Task<IActionResult> ApiKeys()
         {
             int userId = GetUserId();
@@ -115,10 +110,6 @@ namespace AIKeyManager.Controllers
             return View(keys);
         }
 
-        // Generiše novi API key. Umjesto da C# kod sam pravi key i upisuje ga,
-        // poziva se stored procedura sp_GenerateApiKey koja je definisana u bazi.
-        // Procedura sama provjerava da li korisnik i model postoje, generiše key,
-        // i upisuje ga u tabelu ApiKeys.
         [HttpPost]
         public async Task<IActionResult> GenerateApiKey(int modelId, string keyName)
         {
@@ -145,8 +136,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("ApiKeys");
         }
 
-        // Deaktivira (revoke) postojeći API key. Ovo ostaje kao direktna
-        // EF Core izmjena jer je jednostavna operacija (samo promjena jednog polja).
         [HttpPost]
         public async Task<IActionResult> RevokeApiKey(int id)
         {
@@ -164,9 +153,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("ApiKeys");
         }
 
-        // Simulira korištenje API keya - kao da je AI stvarno odradio jedan poziv.
-        // Ovo ubacuje red u Requests tabelu, a NAŠ TRIGGER (trg_Request_DeductCredit)
-        // se automatski pokrene i oduzme kredit korisniku.
         [HttpPost]
         public async Task<IActionResult> SimulateRequest(int apiKeyId)
         {
@@ -216,9 +202,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("ApiKeys");
         }
 
-        // Briše historiju requestova (Nedavna aktivnost) za ulogovanog korisnika.
-        // NE dira Credits.Balance - taj kredit je već "potrošen" i ostaje potrošen.
-        // Ovo samo čisti log koji se prikazuje na Dashboard-u, kao "obriši historiju".
         [HttpPost]
         public async Task<IActionResult> ClearRequestHistory()
         {
@@ -236,7 +219,6 @@ namespace AIKeyManager.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // Pretraga modela - i brza pretraga (samo query) i detaljna (query + provider filter).
         public async Task<IActionResult> Search(string query, int? providerId, int? modelId)
         {
             IQueryable<AIModel> models = _context.Models
