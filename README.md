@@ -42,9 +42,10 @@ Built as a project for the Advanced Databases course at the Faculty of Natural S
 
 ### Prerequisites
 
-- Visual Studio 2022 with the ASP.NET and web development workload
+- Visual Studio 2022 (version 17.13 or newer, needed for the `.slnx` solution format) or Visual Studio 2026, with the **ASP.NET and web development** workload
 - .NET SDK matching the version in `AIKeyManager.csproj`
-- SQL Server (LocalDB or Express is enough)
+- SQL Server Express (LocalDB also works, but you have to change the connection string, see step 2)
+- SQL Server Management Studio (SSMS), or any other tool that can run a `.sql` script
 
 ### 1. Clone the repository
 
@@ -52,26 +53,40 @@ Built as a project for the Advanced Databases course at the Faculty of Natural S
 git clone https://github.com/ogi122/AIKeyManager.git
 ```
 
-### 2. Configure the database connection
+### 2. Check the database connection
 
-Copy `appsettings.example.json` to `appsettings.json` and set your connection string:
+The connection string is already included in `appsettings.json` and points to a local SQL Server Express instance:
 
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=AIKeyManager;Trusted_Connection=True;"
-  }
-}
+```
+Server=localhost\SQLEXPRESS;Database=AIKeyManager;Trusted_Connection=True;TrustServerCertificate=True;
+```
+
+If you use LocalDB or a different SQL Server instance, change the `Server=` part, for example:
+
+```
+Server=(localdb)\MSSQLLocalDB;Database=AIKeyManager;Trusted_Connection=True;TrustServerCertificate=True;
 ```
 
 ### 3. Create the database
 
-Open **Tools → NuGet Package Manager → Package Manager Console** in Visual Studio and run:
+The database (tables, triggers, stored procedures, functions and seed data) is created with a SQL script. This project does not use EF migrations, so `Update-Database` will **not** create the schema.
 
-```powershell
-Update-Database
-```
+1. Open **SQL Server Management Studio** and connect to your SQL Server instance (for example `localhost\SQLEXPRESS`).
+2. Open `Database/AIKeyManager.sql` (**File → Open → File**).
+3. Press **F5** to run the script.
+
+The script creates the `AIKeyManager` database and fills it with the model catalog, subscription plans and an admin account. It is meant to be run once on a clean database. If you want to run it again, delete the `AIKeyManager` database first.
 
 ### 4. Run the project
 
 Open `AIKeyManager.slnx` in Visual Studio, set `AIKeyManager` as the startup project and press **F5**.
+
+### 5. Log in
+
+Use the default admin account:
+
+| Username | Password |
+|---|---|
+| `admin` | `Admin123!` |
+
+Or register a new user. New accounts start with $5.00 of credit.
