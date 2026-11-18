@@ -72,7 +72,7 @@ Server=(localdb)\MSSQLLocalDB;Database=AIKeyManager;Trusted_Connection=True;Trus
 The database (tables, triggers, stored procedures, functions and seed data) is created with a SQL script. This project does not use EF migrations, so `Update-Database` will **not** create the schema.
 
 1. Open **SQL Server Management Studio** and connect to your SQL Server instance (for example `localhost\SQLEXPRESS`).
-2. Open `Database/AIKeyManager.sql` (**File → Open → File**).
+2. Open `AIKeyManager.sql` from the root of the repository (**File → Open → File**).
 3. Press **F5** to run the script.
 
 The script creates the `AIKeyManager` database and fills it with the model catalog, subscription plans and an admin account. It is meant to be run once on a clean database. If you want to run it again, delete the `AIKeyManager` database first.
